@@ -1,15 +1,61 @@
-import Button from "react-bootstrap/Button";
-import { ButtonGroup } from "react-bootstrap";
+import { useState } from "react";
+import React from "react";
+import { Alert } from "react-bootstrap";
 
-const PollButtonGroup = () => {
+interface Props {
+  stringify: string;
+  onSelectItem: () => void;
+}
+
+function PollButtonGroup({ stringify, onSelectItem }: Props) {
+  //hook
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const items = stringify.split("{").slice(1);
+
+  function handleSubmit() {
+    if (selectedIndex === -1) {
+      alert("error: please select an answer before submitting");
+    } else {
+      alert(`submitting option ${selectedIndex + 1}...`);
+    }
+  }
+
   return (
-    <ButtonGroup vertical>
-      <Button>Option 1</Button>
-      <Button>Option 2</Button>
-      <Button>Option 3</Button>
-      <Button>Option 4</Button>
-    </ButtonGroup>
+    <>
+      {items.length === 0 && <p>no poll options found</p>}
+      {items.map((item, index) => (
+        <div>
+          <button
+            className={
+              selectedIndex === index
+                ? "button-group-item-active"
+                : "button-group-item"
+            }
+            key={index}
+            onClick={() => {
+              setSelectedIndex(index);
+              onSelectItem();
+            }}
+          >
+            {item
+              .split(":")[2]
+              .replaceAll(",", "")
+              .replace('"', "")
+              .replace("[", "")
+              .replace("]", "")
+              .replace("{", "")
+              .replace("}", "")
+              .slice(0, -1)}
+          </button>
+        </div>
+      ))}
+      <div className="divider">
+        <button className="submitButton" onClick={handleSubmit}>
+          Submit
+        </button>
+      </div>
+    </>
   );
-};
+}
 
 export default PollButtonGroup;

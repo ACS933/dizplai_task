@@ -11,6 +11,34 @@ const app: Express = express();
 app.use(express.json());
 app.use(cors());
 
+const polls = [{ 
+    "pollId": 1,
+    "pollName": "Premier League Winner",
+    "question": "who will win the premier league?",
+    "options" : [
+        {
+            "optionId": 1,
+            "optionText": "Manchester City"
+        },
+
+        {
+            "optionId": 2,
+            "optionText": "Arsenal"
+        },
+
+        {
+            "optionId": 3,
+            "optionText": "Liverpool"
+        },
+
+        {
+            "optionId": 4,
+            "optionText": "Tottenham"
+        }
+    ] 
+  }
+  ];
+
 app.get('/', (req: Request, res: Response) => {
     res.send("hello, this is a message from a typescript express server.")
 });
@@ -20,34 +48,14 @@ interface FormInputs{
     password: string
   }
   
-  const users = [
-    {
-      id:1,
-      name: "billy bob",
-      email: "bob@example.com",
-      password: "bob23"
-    },
-    {
-      id: 2,
-      name: 'other guy',
-      email: 'otheremail@email.com',
-      password: 'mypassword'
-    }
-  ];
+
   
-  //login route
-  app.post('/login', (req: Request, res: Response) => {
-    const {email, password}: FormInputs = req.body;
-  
-    const user = users.find(user => {
-      return user.email === email && user.password === password
-    });
-  
-    if (!user) {
-      return res.status(404).send('user not found;')
-    }
-  
-    return res.status(200).json(user);
+ 
+
+  app.get('/api/polls/:pollId', (req: Request, res: Response) => {
+    const poll = polls.find(c => c.pollId === parseInt(req.params.pollId));
+    if (!poll) return res.status(404).send("poll does not exist");
+    res.send(poll);
   })
   
 

@@ -5,6 +5,18 @@
 
 .App {
   text-align: center;
+  background-image: url(./assets/background.jpg);
+  background-size: cover;
+  font-family: "Outfit";
+  
+
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
   
 }
 
@@ -21,23 +33,63 @@
 
 
 
-.App-header {
-  background-image: url(./assets/background.jpg);
-  background-size: cover;
-  font-family: "Outfit";
-  
-
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
 .App-link {
   color: #61dafb;
 }
 
+.button-group-item {
+  color: white;
+  background-color: transparent;
+  border-color: #8C8C8C;
+  font-size: small;
+  font-family: "Outfit";
+  width: 250px;
+  height: 50px;
+  border-radius: 10%;
+  border-width: medium;
+  align-items: center;
+  margin: 10px;
+  
+}
 
+.button-group-item-active {
+  color:white;
+  background-color: #996bf9;
+  font-size: small;
+  width: 250px;
+  height: 50px;
+  font-family: "Outfit";
+  border-radius: 10%;
+  border-width: medium;
+  align-items: center;
+  margin: 10px;
+
+}
+
+.divider {
+  height: 25px;
+  width: auto;
+
+}
+
+.submitButton {
+  
+  color: #996bf9;
+  background-color:white;
+ 
+  font-size: small;
+  width: 250px;
+  height: 50px;
+  font-family: "Outfit";
+  border-radius: 10%;
+  border-width: medium;
+  align-items: center;
+}
+
+.pollQuestion {
+  align-items: center;
+}
+
+.card {
+  align-items: center;
+}

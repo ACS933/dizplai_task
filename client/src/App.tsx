@@ -2,88 +2,51 @@ import { useState, ChangeEvent, FormEvent } from "react";
 import logo from "./assets/logo.png";
 import { getData } from "./utils/data-utils";
 import Page1 from "./components/page1/page1";
-import Button from "react-bootstrap";
-import ButtonGroup from "react-bootstrap";
+import PollButtonGroup from "./components/page1/pollButtonGroup";
 
 import "./App.css";
+import { response } from "express";
 
-// TypeScript declarations
-type User = {
-  id: number;
-  name: string;
-  email: string;
-  password: string;
-};
-
-const defaultFormFields = {
-  email: "",
-  password: "",
+type Poll = {
+  pollId: number;
+  pollName: string;
+  question: string;
+  options: JSON[];
 };
 
 const App = () => {
   // react hooks
-  const [user, setUser] = useState<User | null>();
-  const [formFields, setFormFields] = useState(defaultFormFields);
-  const { email, password } = formFields;
 
-  const resetFormFields = () => {
-    return setFormFields(defaultFormFields);
-  };
+  const [pollQ, setPollQ] = useState("");
+  const [questionOptions, setQuestionOptions] = useState("");
 
-  // handle input changes
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormFields({ ...formFields, [name]: value });
-  };
+  var temp = [{}];
+  var temp2: string[] = [];
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    try {
-      // make the API call
-      const res: User = await getData(
-        "http://localhost:8000/login",
-        email,
-        password
-      );
-      setUser(res);
-      resetFormFields();
-    } catch (error) {
-      alert("User Sign In Failed");
-    }
-  };
-
-  const reload = () => {
-    setUser(null);
-    resetFormFields();
-  };
+  function setPoll(item: JSON[], value: JSON[]) {
+    item = value;
+  }
+  try {
+    //api call
+    const poll = fetch("http://localhost:8000/api/polls/1")
+      .then((response) => response.json())
+      .then((response) => setPollQ(response.question));
+    const options = fetch("http://localhost:8000/api/polls/1")
+      .then((response) => response.json())
+      .then((response) => setQuestionOptions(JSON.stringify(response.options)));
+  } catch (error) {
+    alert("poll not found");
+  }
 
   return (
-    <div className="App-header">
-      <h1>{user && `Welcome! ${user.name}`}</h1>
+    <div className="App">
+      <img src={logo} alt="Dizplai" width="300" height="100" />
       <div className="card">
-        <img src={logo} alt="Dizplai" width="300" height="100" />
-        <h2>Sign In</h2>
-        <form onSubmit={handleSubmit}>
-          <div
-            className="btn-group-vertical"
-            role="group"
-            aria-label="Vertical button group"
-          >
-            <button type="button" className="btn btn-primary">
-              Button
-            </button>
-            <button type="button" className="btn btn-primary">
-              Button
-            </button>
-            <button type="button" className="btn btn-primary">
-              Button
-            </button>
-            <button type="button" className="btn btn-primary">
-              Button
-            </button>
-          </div>
-        </form>
+        <h2 className="pollQuestion">{pollQ}</h2>
+        <PollButtonGroup
+          stringify={questionOptions}
+          onSelectItem={() => console.log("hi")}
+        ></PollButtonGroup>
       </div>
     </div>
   );
